@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        #video{
+            width: 1000px;
+            height: 800px;
+            padding: 50px;
+        }
+        #btn{
+            background-color: #fff;
+            font-size: 24px;
+            width: 300px;
+            height: 280px;
+            position: absolute;
+            top: 400px;
+        }
+        #btn:hover{
+            background-color: #d1d1d1;
+        }
+
+    </style>
+</head>
+<body>
+    <script>
+        function startVideo() {
+            document.getElementById("video").src = "{{ url_for('video_cat') }}";
+        }
+    </script>
+
+    <h1>camera</h1>
+    <hr>
+    <img id="video" src="{{ url_for('video_feed') }}">
+    <button id="btn" onclick="startVideo()">Cat</button>
+</body>
+</html>
