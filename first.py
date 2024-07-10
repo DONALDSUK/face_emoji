@@ -1,5 +1,4 @@
 import cv2
-import mediapipe as mp
 
 def main_frames():
     cap = cv2.VideoCapture(0)

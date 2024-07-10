@@ -2,38 +2,68 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Camera</title>
     <style>
-        #video{
-            width: 1000px;
-            height: 800px;
-            padding: 50px;
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
         }
-        #btn{
+        h1 {
+            color: #333;
+        }
+        #video-container {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            border: 2px solid #ddd;
+            padding: 10px;
             background-color: #fff;
-            font-size: 24px;
-            width: 300px;
-            height: 280px;
-            position: absolute;
-            top: 400px;
         }
-        #btn:hover{
-            background-color: #d1d1d1;
+        #video {
+            max-width: 100%;
+            height: auto;
+            width: 80%;
         }
-
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
+    <h1>Camera</h1>
+    <hr>
+    <div id="video-container">
+        <img id="video" src="{{ url_for('video_feed') }}">
+    </div>
+    <div class="btn-container">
+        <button class="btn" onclick="toggleOverlay()">Change</button>
+    </div>
     <script>
-        function startVideo() {
-            document.getElementById("video").src = "{{ url_for('video_cat') }}";
+        function toggleOverlay() {
+            fetch('/toggle_overlay', { method: 'POST' });
         }
     </script>
-
-    <h1>camera</h1>
-    <hr>
-    <img id="video" src="{{ url_for('video_feed') }}">
-    <button id="btn" onclick="startVideo()">Cat</button>
 </body>
 </html>
