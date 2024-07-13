@@ -58,11 +58,16 @@
         <img id="video" src="{{ url_for('video_feed') }}">
     </div>
     <div class="btn-container">
-        <button class="btn" onclick="toggleOverlay()">Change</button>
+        <button onclick="deact_Overlay()">reset</button>
+        <button onclick="act_Overlay()">cat</button>
     </div>
+
     <script>
-        function toggleOverlay() {
-            fetch('/toggle_overlay', { method: 'POST' });
+        function act_Overlay() {
+            fetch('/act_overlay');
+        }
+        function deact_Overlay() {
+            fetch('/deact_overlay');
         }
     </script>
 </body>

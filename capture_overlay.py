@@ -43,7 +43,7 @@ def generate_frames():
             image.flags.writeable = True
             image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR) #rbg -> bgr로 변환
 
-            if overlay_active.is_set() and results.detections: # overlay_active가 true일때  results에 얼굴이 인식되었을때만 실행
+            if overlay_active==1 and results.detections: # overlay_active가 true일때  results에 얼굴이 인식되었을때만 실행
                 for detection in results.detections:
                     keypoints = detection.location_data.relative_keypoints
                     left_eye = keypoints[0]
