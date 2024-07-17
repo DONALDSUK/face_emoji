@@ -1,13 +1,19 @@
 import cv2
 import mediapipe as mp
-import threading
+
 
 mp_face_detection = mp.solutions.face_detection #mediapipe에서 제공하는 얼굴인식 머신러닝 모델
+
+overlay_status=0
 
 # 오버레이 이미지를 불러오기
 image_right_eye = cv2.imread('./images/right_eye.png', cv2.IMREAD_UNCHANGED)
 image_left_eye = cv2.imread('./images/left_eye.png', cv2.IMREAD_UNCHANGED)
 image_nose = cv2.imread('./images/nose.png', cv2.IMREAD_UNCHANGED)
+
+image_fox_right_eye = cv2.imread('./images/fox_right_eye.png', cv2.IMREAD_UNCHANGED)
+image_fox_left_eye = cv2.imread('./images/fox_left_eye.png', cv2.IMREAD_UNCHANGED)
+image_fox_nose = cv2.imread('./images/fox_nose.png', cv2.IMREAD_UNCHANGED)
 
 def overlay(image, x, y, w, h, overlay_image): # 오버레이(위에 덧씌우는)하는 함수
                                                #image: 오버레이할 대상이 되는 원본 이미지
@@ -28,7 +34,7 @@ def overlay(image, x, y, w, h, overlay_image): # 오버레이(위에 덧씌우�
     except Exception as e:
         pass
 
-overlay_active = threading.Event() #스레드 간에 상태를 공유할 수 있는 도구
+
 
 def generate_frames():
     cap = cv2.VideoCapture(0)
@@ -43,7 +49,7 @@ def generate_frames():
             image.flags.writeable = True
             image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR) #rbg -> bgr로 변환
 
-            if overlay_active==1 and results.detections: # overlay_active가 true일때  results에 얼굴이 인식되었을때만 실행
+            if results.detections: #results에 얼굴이 인식되었을때만 실행
                 for detection in results.detections:
                     keypoints = detection.location_data.relative_keypoints
                     left_eye = keypoints[0]
@@ -53,12 +59,17 @@ def generate_frames():
                     right_eye = (int(right_eye.x * w) + 20, int(right_eye.y * h) - 100) #각 특징점을 픽셀단위로 변환
                     left_eye = (int(left_eye.x * w) - 20, int(left_eye.y * h) - 100)
                     nose_tip = (int(nose_tip.x * w), int(nose_tip.y * h))
+                    if  overlay_status==1:
+                        overlay(image, *right_eye, 50, 50, image_right_eye)
+                        overlay(image, *left_eye, 50, 50, image_left_eye)
+                        overlay(image, *nose_tip, 150, 50, image_nose)
 
-                    overlay(image, *right_eye, 50, 50, image_right_eye)
-                    overlay(image, *left_eye, 50, 50, image_left_eye)
-                    overlay(image, *nose_tip, 150, 50, image_nose)
+                    elif  overlay_status==2:
+                        overlay(image, *right_eye, 50, 50, image_fox_right_eye)
+                        overlay(image, *left_eye, 50, 50, image_fox_left_eye)
+                        overlay(image, *nose_tip, 150, 50, image_fox_nose)
 
-            ret, buffer = cv2.imencode('.jpg', image)
+            _ , buffer = cv2.imencode('.jpg', image)
             frame = buffer.tobytes()
 
             yield (b'--frame\r\n'

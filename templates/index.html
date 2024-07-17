@@ -58,16 +58,20 @@
         <img id="video" src="{{ url_for('video_feed') }}">
     </div>
     <div class="btn-container">
-        <button onclick="deact_Overlay()">reset</button>
-        <button onclick="act_Overlay()">cat</button>
+        <button onclick="reset_Overlay()">reset</button>
+        <button onclick="cat_Overlay()">cat</button>
+        <button onclick="fox_Overlay()">fox</button>
     </div>
 
     <script>
-        function act_Overlay() {
-            fetch('/act_overlay');
+        function reset_Overlay() {
+            fetch('/reset_overlay');
         }
-        function deact_Overlay() {
-            fetch('/deact_overlay');
+        function cat_Overlay() {
+            fetch('/cat_overlay');
+        }
+        function fox_Overlay() {
+            fetch('/fox_overlay');
         }
     </script>
 </body>
